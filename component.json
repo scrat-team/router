@@ -1,0 +1,15 @@
+{
+  "name": "router",
+  "repo": "elf/router",
+  "description": "A hashchange based frontend router, inspired by TJ Holowaychuk's page.js",
+  "version": "0.1.0",
+  "keywords": ["router", "page.js"],
+  "scripts": ["index.js"],
+  "dependencies": {
+    "elf/lang": "0.1.0"
+  },
+  "remotes": [
+    "http://git.ucweb.local"
+  ],
+  "license": "MIT"
+}
