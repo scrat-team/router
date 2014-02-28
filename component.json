@@ -6,7 +6,9 @@
   "keywords": ["router", "page.js"],
   "scripts": ["index.js"],
   "dependencies": {
-    "elf/lang": "0.1.0"
+    "elf/type": "0.1.0",
+    "elf/each": "0.1.0",
+    "elf/extend": "0.1.0"
   },
   "remotes": [
     "http://git.ucweb.local"

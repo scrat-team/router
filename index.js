@@ -6,7 +6,9 @@
 /*jshint bitwise: false */
 'use strict';
 
-var _ = require('lang'),
+var type = require('type'),
+    each = require('each'),
+    extend = require('extend'),
     // 是否 没有hashchange 事件
     noHashChangeEvent = !('onhashchange' in window),
     slice = Array.prototype.slice,
@@ -36,7 +38,7 @@ function parseSearch(search) {
         pairs = query.length > 0 ? query.split('!!') : [],
         params = {};
 
-    _.each(pairs, function (pair) {
+    each(pairs, function (pair) {
         pair = pair.replace(/\+/g, '%20');
 
         var i = pair.indexOf('='),
@@ -62,7 +64,7 @@ function parseSearch(search) {
 function parseParam(data) {
     var stack = [],
         query;
-    _.each(data, function (value, key) {
+    each(data, function (value, key) {
         stack.push(key + '=' + value);
     });
     query = stack.join('!!').replace(/\s/g, '+');
@@ -77,15 +79,15 @@ function Context(path, state) {
         queries = {},
         i;
 
-    if (_.type(path) === 'array' && path.length >= 0) {
+    if (type(path) === 'array' && path.length >= 0) {
         this.path = '';
         while (path.length) {
             item = path.shift();
-            if (_.type(item) === 'string') {
+            if (type(item) === 'string') {
                 this.path += normalize(item);
             }
             else {
-                queries = _.extend(queries, item);
+                queries = extend(queries, item);
             }
         }
         this.path += (this.path.indexOf('?') < 0 ? '?' : '&') + parseParam(queries);
@@ -116,9 +118,9 @@ function Context(path, state) {
     router(options);
  */
 function router(path, state) {
-    if (_.type(state) === 'function') {
+    if (type(state) === 'function') {
         router.bind.apply(router, arguments);
-    } else if (_.type(path) === 'string') {
+    } else if (type(path) === 'string') {
         router.route(path, state);
     } else {
         router.start(path);
@@ -170,14 +172,14 @@ router.stop = function () {
 
 router.bind = function (pattern /*, handler1, handler2, ... */) {
     var handlers = slice.call(arguments, 1);
-    _.each(handlers, function (handler) {
+    each(handlers, function (handler) {
         this.handlers.push(this.middleware(pattern, handler));
     }, this);
 };
 
 router.unbind = function (pattern /*, handler1, handler2, ... */) {
     var handlers = slice.call(arguments, 1);
-    _.each(handlers, function (handler) {
+    each(handlers, function (handler) {
         var middlewares = this.handlers,
             next = this.next,
             i = 0,
@@ -205,7 +207,7 @@ router.reset = function () {
 };
 
 router.route = function (path, state, dispatch) {
-    if (_.type(state) === 'boolean') {
+    if (type(state) === 'boolean') {
         dispatch = state;
         state = null;
     }
@@ -223,7 +225,7 @@ router.route = function (path, state, dispatch) {
 };
 
 router.replace = function (path, state, dispatch) {
-    if (_.type(state) === 'boolean') {
+    if (type(state) === 'boolean') {
         dispatch = state;
         state = null;
     }
@@ -276,7 +278,7 @@ router.match = function (pattern, pathname, params) {
         return false;
     }
 
-    _.each(keys, function (key, i) {
+    each(keys, function (key, i) {
         params[key] = match[i + 1];
     });
     return true;
