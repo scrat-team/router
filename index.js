@@ -35,7 +35,7 @@ function parseSearch(search) {
         // Fragment shouldn't contain `&`, use `!!` instead
         // http://tools.ietf.org/html/rfc3986
         // @example #!/wallpaper?super=beauty!!sub=nude
-        pairs = query.length > 0 ? query.split('!!') : [],
+        pairs = query.length > 0 ? query.split(/!!(?!!)/) : [],
         params = {};
 
     each(pairs, function (pair) {
